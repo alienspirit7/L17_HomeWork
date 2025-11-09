@@ -1,0 +1,195 @@
+{
+  "data_preparation": [
+    {
+      "task": "Generate embeddings (Gemini)",
+      "details": "Create raw and L2-normalized embeddings using Google Gemini API with manifest output.",
+      "cli_example": "python prepare_embeddings.py --input pipeline_input/TitlesforL16HomeWork.csv --output pipeline_output/embeddings --format parquet --gemini-model models/text-embedding-004 --config config/embedding.json --log-level info"
+    },
+    {
+      "task": "Generate embeddings (via environment variable)",
+      "details": "Use Gemini API key from environment variable instead of config file.",
+      "cli_example": "export GEMINI_API_KEY='your-key-here' && python prepare_embeddings.py --input pipeline_input/TitlesforL16HomeWork.csv --output pipeline_output/embeddings --format parquet"
+    }
+  ],
+  "clustering": [
+    {
+      "task": "Run K-Means clustering (k=3)",
+      "details": "Cluster normalized embeddings with k=3 (hardcoded), export record-level assignments, markdown reports, and centroids.",
+      "cli_example": "python run_kmeans.py --data pipeline_output/embeddings.parquet --output pipeline_output/clustering_results.csv --report pipeline_output/kmeans_report.md --centroids pipeline_output/centroids.json --seed 42"
+    }
+  ],
+  "visualization": [
+    {
+      "task": "Generate all 3D visualizations",
+      "details": "Create three interactive 3D visualizations: Manual PCA (from scratch), Sklearn PCA (validation), and t-SNE. Each includes processing time, variance explained (PCA), and dimension info.",
+      "cli_example": "python visualize_3d.py --data pipeline_output/embeddings.parquet --assignments pipeline_output/clustering_results.csv --output-dir pipeline_output/visualizations --perplexity 30"
+    },
+    {
+      "task": "Manual PCA visualization only",
+      "details": "The manual PCA implementation demonstrates covariance matrix computation, eigendecomposition, and transformation from scratch. Validation report compares against sklearn PCA.",
+      "output_files": [
+        "pipeline_output/visualizations/manual_pca_3d.html",
+        "pipeline_output/visualizations/pca_validation_report.txt"
+      ]
+    },
+    {
+      "task": "Sklearn PCA visualization",
+      "details": "Standard sklearn PCA used for validation of manual implementation.",
+      "output_files": [
+        "pipeline_output/visualizations/sklearn_pca_3d.html"
+      ]
+    },
+    {
+      "task": "t-SNE visualization",
+      "details": "Non-linear dimensionality reduction for revealing local neighborhood structure.",
+      "output_files": [
+        "pipeline_output/visualizations/tsne_3d.html"
+      ]
+    }
+  ],
+  "orchestration": [
+    {
+      "task": "Full pipeline (Gemini via config)",
+      "details": "Run complete workflow: Gemini embeddings → K-Means (k=3) → 3D visualizations (Manual PCA, Sklearn PCA, t-SNE).",
+      "cli_example": "python run_pipeline.py --input pipeline_input/TitlesforL16HomeWork.csv --output-dir pipeline_output --format parquet --config config/embedding.json"
+    },
+    {
+      "task": "Full pipeline (Gemini via API key)",
+      "details": "Same pipeline using API key from command line.",
+      "cli_example": "python run_pipeline.py --input pipeline_input/TitlesforL16HomeWork.csv --output-dir pipeline_output --format parquet --gemini-api-key YOUR_KEY"
+    },
+    {
+      "task": "Full pipeline with custom perplexity",
+      "details": "Customize t-SNE perplexity parameter (default: 30).",
+      "cli_example": "python run_pipeline.py --input pipeline_input/TitlesforL16HomeWork.csv --output-dir pipeline_output --perplexity 50 --config config/embedding.json"
+    }
+  ],
+  "visualization_features": [
+    {
+      "feature": "Color scheme",
+      "details": "Cluster 0 = Red, Cluster 1 = Blue, Cluster 2 = Green"
+    },
+    {
+      "feature": "Shape scheme",
+      "details": "Different marker shapes for each original group (circle, square, diamond, cross, etc.)"
+    },
+    {
+      "feature": "Interactive controls",
+      "details": "Plotly 3D plots support rotation, zoom, pan, and hover tooltips with title/group/cluster info"
+    },
+    {
+      "feature": "Processing time",
+      "details": "Each visualization displays the computation time for that dimensionality reduction method"
+    },
+    {
+      "feature": "Variance explained",
+      "details": "PCA visualizations show percentage of variance retained in 3 dimensions"
+    }
+  ],
+  "manual_pca_details": [
+    {
+      "step": "1. Center the data",
+      "implementation": "Subtract mean from each feature"
+    },
+    {
+      "step": "2. Compute covariance matrix",
+      "implementation": "C = (X_centered.T @ X_centered) / (n - 1)"
+    },
+    {
+      "step": "3. Eigendecomposition",
+      "implementation": "np.linalg.eigh(C) to get eigenvalues and eigenvectors"
+    },
+    {
+      "step": "4. Sort by eigenvalues",
+      "implementation": "Descending order to identify principal components"
+    },
+    {
+      "step": "5. Select top 3 eigenvectors",
+      "implementation": "Form transformation matrix P"
+    },
+    {
+      "step": "6. Transform data",
+      "implementation": "X_transformed = X_centered @ P"
+    },
+    {
+      "step": "7. Calculate variance explained",
+      "implementation": "Sum of top 3 eigenvalues / sum of all eigenvalues"
+    },
+    {
+      "step": "8. Validation",
+      "implementation": "Compare against sklearn PCA with 1e-6 tolerance"
+    }
+  ],
+  "output_structure": {
+    "embeddings": {
+      "files": [
+        "pipeline_output/embeddings.parquet",
+        "pipeline_output/embeddings.manifest.json"
+      ],
+      "description": "Raw and normalized embeddings (768-dim) with metadata"
+    },
+    "clustering": {
+      "files": [
+        "pipeline_output/clustering_results.csv",
+        "pipeline_output/kmeans_report.md",
+        "pipeline_output/centroids.json"
+      ],
+      "description": "Cluster assignments, metrics, and centroid coordinates"
+    },
+    "visualizations": {
+      "files": [
+        "pipeline_output/visualizations/manual_pca_3d.html",
+        "pipeline_output/visualizations/sklearn_pca_3d.html",
+        "pipeline_output/visualizations/tsne_3d.html",
+        "pipeline_output/visualizations/pca_validation_report.txt"
+      ],
+      "description": "Interactive 3D HTML visualizations and validation report"
+    }
+  },
+  "documentation_and_analysis": [
+    {
+      "task": "Update README",
+      "details": "Maintain workflow documentation, 3D visualization details, manual PCA explanation, and usage examples."
+    },
+    {
+      "task": "Update PromptsUsed.md",
+      "details": "Record major requests and implementation decisions for traceability."
+    }
+  ],
+  "code_quality": [
+    {
+      "task": "File size constraint",
+      "details": "All Python files must remain under 200 lines. Use modular utils/ package for shared functionality."
+    },
+    {
+      "task": "Current line counts",
+      "details": "prepare_embeddings.py (155), run_kmeans.py (104), visualize_3d.py (160), run_pipeline.py (130), utils/pca_manual.py (132), utils/visualization_3d.py (185)"
+    },
+    {
+      "task": "Type hints",
+      "details": "All functions include type annotations for parameters and return values."
+    },
+    {
+      "task": "Logging",
+      "details": "All scripts support --log-level for debug/info/warning/error/critical verbosity."
+    }
+  ],
+  "next_steps": [
+    {
+      "task": "Test with larger datasets",
+      "details": "Verify performance and accuracy with 1000+ titles."
+    },
+    {
+      "task": "Experiment with different k values",
+      "details": "While k=3 is hardcoded per requirements, consider parameterizing for research purposes."
+    },
+    {
+      "task": "Additional dimensionality reduction methods",
+      "details": "Consider UMAP, MDS, or other techniques for comparison."
+    },
+    {
+      "task": "Cluster quality metrics",
+      "details": "Add Davies-Bouldin index, Calinski-Harabasz score for cluster evaluation."
+    }
+  ]
+}
