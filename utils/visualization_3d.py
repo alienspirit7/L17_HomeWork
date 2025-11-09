@@ -155,7 +155,7 @@ def generate_sklearn_pca(X: np.ndarray, df: pd.DataFrame, output_path: Path) -> 
     }
 
 
-def generate_tsne(X: np.ndarray, df: pd.DataFrame, output_path: Path, perplexity: int = 30) -> Dict:
+def generate_tsne(X: np.ndarray, df: pd.DataFrame, output_path: Path, perplexity: int = 10) -> Dict:
     """Generate t-SNE 3D visualization."""
     logging.info("Generating t-SNE visualization with perplexity=%d", perplexity)
     start_time = time.time()

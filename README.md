@@ -21,8 +21,7 @@ This project processes a CSV of content titles (`title`, `group`) to generate em
 │   └── visualizations/               # 3D visualization outputs
 │       ├── manual_pca_3d.html
 │       ├── sklearn_pca_3d.html
-│       ├── tsne_3d.html
-│       └── pca_validation_report.txt
+│       └── tsne_3d.html
 ├── utils/                            # Utility modules
 │   ├── embedding.py                  # Gemini embedding functions
 │   ├── vector_ops.py                 # Vector operations
@@ -83,7 +82,7 @@ python run_pipeline.py \
 ```
 
 ### Optional parameters
-- `--perplexity 30` - t-SNE perplexity (default: 30)
+- `--perplexity 10` - t-SNE perplexity (default: 10)
 - `--gemini-model models/text-embedding-004` - specify Gemini embedding model
 - `--log-level debug` - set logging verbosity
 
@@ -96,7 +95,6 @@ Outputs (within `pipeline_output/` by default):
   - `manual_pca_3d.html` - 3D visualization using manual PCA implementation
   - `sklearn_pca_3d.html` - 3D visualization using sklearn PCA (for validation)
   - `tsne_3d.html` - 3D visualization using t-SNE
-  - `pca_validation_report.txt` - validation report comparing manual vs sklearn PCA
 
 ## Workflow Overview
 ```text
@@ -115,8 +113,7 @@ visualize_3d.py
       └─ visualizations/
           ├─ manual_pca_3d.html
           ├─ sklearn_pca_3d.html
-          ├─ tsne_3d.html
-          └─ pca_validation_report.txt
+          └─ tsne_3d.html
 ```
 
 ## Why Dimensionality Reduction?
@@ -202,7 +199,7 @@ The pipeline generates three types of interactive 3D visualizations:
 
 ### 3. t-SNE
 - Implementation: sklearn TSNE with 3 components
-- Parameters: perplexity=30 (configurable via `--perplexity`)
+- Parameters: perplexity=10 (configurable via `--perplexity`)
 - Best for: Revealing local neighborhood structures
 - Shows: Dimension reduction info
 - Same color and shape scheme as PCA
@@ -262,17 +259,16 @@ python visualize_3d.py \
   --data processed/embeddings.parquet \
   --assignments processed/clustering_results.csv \
   --output-dir processed/visualizations \
-  --perplexity 30
+  --perplexity 10
 ```
 Options:
-- `--perplexity` - t-SNE perplexity parameter (default: 30)
+- `--perplexity` - t-SNE perplexity parameter (default: 10)
 - `--log-level` - logging verbosity
 
 Outputs:
 - `manual_pca_3d.html` - Manual PCA implementation visualization
 - `sklearn_pca_3d.html` - Sklearn PCA visualization (for validation)
 - `tsne_3d.html` - t-SNE visualization
-- `pca_validation_report.txt` - Detailed validation metrics
 
 ## Manual PCA Implementation
 

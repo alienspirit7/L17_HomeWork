@@ -22,14 +22,13 @@
     {
       "task": "Generate all 3D visualizations",
       "details": "Create three interactive 3D visualizations: Manual PCA (from scratch), Sklearn PCA (validation), and t-SNE. Each includes processing time, variance explained (PCA), and dimension info.",
-      "cli_example": "python visualize_3d.py --data pipeline_output/embeddings.parquet --assignments pipeline_output/clustering_results.csv --output-dir pipeline_output/visualizations --perplexity 30"
+      "cli_example": "python visualize_3d.py --data pipeline_output/embeddings.parquet --assignments pipeline_output/clustering_results.csv --output-dir pipeline_output/visualizations --perplexity 10"
     },
     {
       "task": "Manual PCA visualization only",
-      "details": "The manual PCA implementation demonstrates covariance matrix computation, eigendecomposition, and transformation from scratch. Validation report compares against sklearn PCA.",
+      "details": "The manual PCA implementation demonstrates covariance matrix computation, eigendecomposition, transformation from scratch, and inline validation against sklearn PCA.",
       "output_files": [
-        "pipeline_output/visualizations/manual_pca_3d.html",
-        "pipeline_output/visualizations/pca_validation_report.txt"
+        "pipeline_output/visualizations/manual_pca_3d.html"
       ]
     },
     {
@@ -60,8 +59,8 @@
     },
     {
       "task": "Full pipeline with custom perplexity",
-      "details": "Customize t-SNE perplexity parameter (default: 30).",
-      "cli_example": "python run_pipeline.py --input pipeline_input/TitlesforL16HomeWork.csv --output-dir pipeline_output --perplexity 50 --config config/embedding.json"
+      "details": "Customize t-SNE perplexity parameter (default: 10).",
+      "cli_example": "python run_pipeline.py --input pipeline_input/TitlesforL16HomeWork.csv --output-dir pipeline_output --perplexity 10 --config config/embedding.json"
     }
   ],
   "visualization_features": [
@@ -140,10 +139,9 @@
       "files": [
         "pipeline_output/visualizations/manual_pca_3d.html",
         "pipeline_output/visualizations/sklearn_pca_3d.html",
-        "pipeline_output/visualizations/tsne_3d.html",
-        "pipeline_output/visualizations/pca_validation_report.txt"
+        "pipeline_output/visualizations/tsne_3d.html"
       ],
-      "description": "Interactive 3D HTML visualizations and validation report"
+      "description": "Interactive 3D HTML visualizations with inline validation logs"
     }
   },
   "documentation_and_analysis": [

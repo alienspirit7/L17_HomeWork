@@ -135,7 +135,7 @@ L17_HomeWork/
 3. **Visualization**: Three 3D visualizations
    - Manual PCA (custom implementation)
    - Sklearn PCA (validation)
-   - t-SNE (perplexity=30)
+   - t-SNE (perplexity=10)
 
 ### Key Features
 - Manual PCA: covariance matrix → eigendecomposition → transformation

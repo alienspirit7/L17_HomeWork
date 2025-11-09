@@ -1,0 +1,15 @@
+{
+  "script": "prepare_embeddings.py",
+  "version": "1.0.0",
+  "timestamp_utc": "2025-11-09T00:44:34Z",
+  "input_path": "/Users/alienspirit/Documents/25D/L17_HomeWork/pipeline_input/TitlesforL16HomeWork.csv",
+  "input_rows": 30,
+  "processed_rows": 30,
+  "skipped_rows": 0,
+  "provider": "gemini",
+  "model_id": "models/text-embedding-004",
+  "embedding_dim": 768,
+  "normalization": "l2",
+  "seed": null,
+  "elapsed_seconds": 9.45
+}

@@ -29,7 +29,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--gemini-model", help="Gemini embedding model (default: models/text-embedding-004).")
     parser.add_argument("--gemini-api-key", help="Gemini API key (or use GEMINI_API_KEY env var).")
     parser.add_argument("--config", help="Optional JSON config file for Gemini settings.")
-    parser.add_argument("--perplexity", type=int, default=30, help="t-SNE perplexity (default: 30).")
+    parser.add_argument("--perplexity", type=int, default=10, help="t-SNE perplexity (default: 10).")
     parser.add_argument(
         "--log-level", default="info", choices=["debug", "info", "warning", "error", "critical"],
         help="Logging verbosity."
@@ -119,7 +119,6 @@ def main() -> None:
     logging.info("    • manual_pca_3d.html")
     logging.info("    • sklearn_pca_3d.html")
     logging.info("    • tsne_3d.html")
-    logging.info("    • pca_validation_report.txt")
 
 
 if __name__ == "__main__":

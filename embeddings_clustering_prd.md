@@ -161,7 +161,7 @@ A Python-based toolkit that transforms article titles into semantic embeddings u
 
 #### 4.3.3 t-SNE Implementation
 **Algorithm:**
-1. Use `sklearn.manifold.TSNE(n_components=3, random_state=42, perplexity=30)`
+1. Use `sklearn.manifold.TSNE(n_components=3, random_state=42, perplexity=10)`
 2. Fit and transform normalized embeddings
 3. t-SNE does not provide variance explained (note this in visualization)
 
@@ -202,7 +202,7 @@ A Python-based toolkit that transforms article titles into semantic embeddings u
 --data <path>               # Path to embeddings dataset
 --assignments <path>        # Path to clustering results
 --output-dir <path>         # Directory for output plots
---perplexity <int>          # t-SNE perplexity (default: 30)
+--perplexity <int>          # t-SNE perplexity (default: 10)
 --format [html|png]         # Output format (default: html for interactivity)
 --log-level [debug|info]    # Logging verbosity
 ```
@@ -211,7 +211,6 @@ A Python-based toolkit that transforms article titles into semantic embeddings u
 - `manual_pca_3d.html` - Manual PCA visualization
 - `sklearn_pca_3d.html` - Sklearn PCA visualization
 - `tsne_3d.html` - t-SNE visualization
-- `pca_validation_report.txt` - Comparison of manual vs sklearn PCA
 - Optional: PNG versions if `--format png` specified
 
 ### 4.4 Pipeline Orchestrator (`run_pipeline.py`)
@@ -221,7 +220,7 @@ A Python-based toolkit that transforms article titles into semantic embeddings u
 1. Prepare embeddings (Gemini API)
 2. Run K-Means clustering (k=3)
 3. Generate all 3 visualizations
-4. Save validation report
+4. Log validation metrics
 
 **CLI Arguments:**
 ```bash
@@ -244,8 +243,7 @@ pipeline_output/
 ├── visualizations/
 │   ├── manual_pca_3d.html
 │   ├── sklearn_pca_3d.html
-│   ├── tsne_3d.html
-│   └── pca_validation_report.txt
+│   └── tsne_3d.html
 ```
 
 ## 5. Data & Model Specifications

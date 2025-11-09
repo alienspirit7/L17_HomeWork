@@ -26,7 +26,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--data", required=True, help="Path to embeddings dataset.")
     parser.add_argument("--assignments", required=True, help="Path to clustering results with cluster_id.")
     parser.add_argument("--output-dir", required=True, help="Directory for output visualizations.")
-    parser.add_argument("--perplexity", type=int, default=30, help="t-SNE perplexity (default: 30).")
+    parser.add_argument("--perplexity", type=int, default=10, help="t-SNE perplexity (default: 10).")
     parser.add_argument(
         "--log-level", default="info", choices=["debug", "info", "warning", "error", "critical"],
         help="Logging verbosity."
@@ -36,36 +36,6 @@ def parse_args() -> argparse.Namespace:
 
 def configure_logging(level: str) -> None:
     logging.basicConfig(level=getattr(logging, level.upper()), format="%(asctime)s %(levelname)s %(message)s")
-
-
-def save_validation_report(report: dict, output_path: Path) -> None:
-    """Save PCA validation report to text file."""
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-    with output_path.open("w") as f:
-        f.write("=" * 60 + "\n")
-        f.write("PCA VALIDATION REPORT\n")
-        f.write("Manual PCA vs Sklearn PCA Comparison\n")
-        f.write("=" * 60 + "\n\n")
-
-        f.write(f"All Checks Passed: {report['all_checks_passed']}\n\n")
-
-        f.write("Metrics:\n")
-        f.write(f"  - Eigenvalue Max Difference: {report['eigenvalue_max_diff']:.2e}\n")
-        f.write(f"  - Variance Explained Difference: {report['variance_explained_diff']:.2e}\n")
-        f.write(f"  - Eigenvalues Match: {report['eigenvalues_match']}\n")
-        f.write(f"  - Variance Match: {report['variance_match']}\n")
-        f.write(f"  - Coordinates Match (with sign flips): {report['coordinates_match']}\n\n")
-
-        f.write("Variance Explained:\n")
-        f.write(f"  - Manual PCA: {report['manual_variance']*100:.4f}%\n")
-        f.write(f"  - Sklearn PCA: {report['sklearn_variance']*100:.4f}%\n\n")
-
-        if report['all_checks_passed']:
-            f.write("✓ Manual PCA implementation is CORRECT!\n")
-        else:
-            f.write("✗ Manual PCA implementation has DIFFERENCES from sklearn.\n")
-
-    logging.info("Validation report saved to %s", output_path)
 
 
 def main() -> None:
@@ -129,8 +99,12 @@ def main() -> None:
     logging.info("Validating Manual PCA against Sklearn")
     logging.info("=" * 60)
     validation_report = validate_pca_with_sklearn(X, manual_result)
-    report_path = output_dir / "pca_validation_report.txt"
-    save_validation_report(validation_report, report_path)
+    logging.info(
+        "Validation metrics — eigenvalue_diff=%.2e variance_diff=%.2e coords_match=%s",
+        validation_report["eigenvalue_max_diff"],
+        validation_report["variance_explained_diff"],
+        validation_report["coordinates_match"]
+    )
 
     # 4. t-SNE
     logging.info("=" * 60)
@@ -147,7 +121,6 @@ def main() -> None:
     logging.info("  - Manual PCA: %s", manual_path)
     logging.info("  - Sklearn PCA: %s", sklearn_path)
     logging.info("  - t-SNE: %s", tsne_path)
-    logging.info("  - Validation Report: %s", report_path)
     logging.info("PCA Validation: %s",
                  "PASSED ✓" if validation_report['all_checks_passed'] else "FAILED ✗")
 
