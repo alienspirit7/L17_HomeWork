@@ -150,3 +150,42 @@ L17_HomeWork/
 - Scikit-learn (K-Means, PCA, t-SNE)
 - Plotly (3D interactive visualizations)
 - NumPy, Pandas, PyArrow
+
+---
+
+## Session 3: Refinements & Documentation Enhancements
+
+### User Prompts (Verbatim) & Outcomes
+
+1. **"Change perplexity to be 10. Ask before any change made to the code"**  
+   - Confirmed target files, located all references to the perplexity default.
+
+2. **"search the code I am in"**  
+   - Ran repo-wide search for `perplexity` to map every usage before editing.
+
+3. **"I am in the folder L17_HomeWork"**  
+   - Interpreted as confirmation of repo root; proceeded with edits accordingly.
+
+4. **"all"**  
+   - Updated every code path and documentation reference so the t-SNE default is 10 (visualize_3d.py, run_pipeline.py, utils/visualization_3d.py, README.md, tasks.json, embeddings_clustering_prd.md, PromptsUsed.md). Ensured docs and CLI examples match.
+
+5. **"Could you check why 2 methods do not return the same results? ... PCA Validation log"**  
+   - Reviewed validation report and manual PCA implementation; identified the double `(n-1)` scaling in the eigenvalue comparison as the root cause and suggested tolerance adjustments when re-running validation.
+
+6. **"Don't create PCA validation report"**  
+   - Removed on-disk report generation from visualize_3d.py, adjusted logging to print metrics inline, updated run_pipeline summary, README, tasks.json, and PRD to stop referencing `pca_validation_report.txt`.
+
+7. **"Use Images from the folder Images and add them to the ReadMe file where relevant"**  
+   - Embedded the provided screenshots (input preview, pipeline outputs, and each visualization) into README sections describing those artifacts.
+
+8. **"Add to readme that the results of input file were better with PCA than T-SNE and explain why"**  
+   - Added a “Results on the Sample Input File” subsection explaining PCA’s clearer separation versus t-SNE for the bundled dataset.
+
+9. **"Add to prompts file - prompts from this session and summary of what was done"**  
+   - Documented all prompts above and summarized the session outcomes in this section.
+
+### Session Summary
+- Standardized the project on a t-SNE default perplexity of 10 and synchronized all docs/tasks accordingly.
+- Diagnosed manual vs sklearn PCA validation differences and highlighted the scaling fix needed.
+- Simplified the workflow by logging validation metrics instead of writing a report file, updating every reference.
+- Enhanced README visual appeal with actual screenshots plus an analysis of why PCA outperforms t-SNE for the sample data.
