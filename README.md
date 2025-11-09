@@ -35,6 +35,8 @@ This project processes a CSV of content titles (`title`, `group`) to generate em
 └── run_pipeline.py                   # Orchestrates the full end-to-end flow
 ```
 
+![Sample input file preview](Images/Input%20file.png)
+
 ## Prerequisites
 - Python 3.10 or newer
 - Recommended: virtual environment (e.g., `python -m venv .venv && source .venv/bin/activate`)
@@ -95,6 +97,8 @@ Outputs (within `pipeline_output/` by default):
   - `manual_pca_3d.html` - 3D visualization using manual PCA implementation
   - `sklearn_pca_3d.html` - 3D visualization using sklearn PCA (for validation)
   - `tsne_3d.html` - 3D visualization using t-SNE
+
+![End-to-end embeddings and clustering artifacts](Images/Gemini%20based%20embedding%20and%20K-Means%20clustering%20results.png)
 
 ## Workflow Overview
 ```text
@@ -188,6 +192,8 @@ The pipeline generates three types of interactive 3D visualizations:
 - Color scheme: Red (cluster 0), Blue (cluster 1), Green (cluster 2)
 - Shape scheme: Different markers for original groups
 
+![Manual PCA visualization](Images/manual_PCA_visual.png)
+
 ### 2. Sklearn PCA (Validation)
 - Implementation: Standard sklearn PCA
 - Purpose: Validate manual PCA implementation
@@ -197,12 +203,16 @@ The pipeline generates three types of interactive 3D visualizations:
   - Variance explained (tolerance: 1e-6)
   - Transformed coordinates (with sign flip tolerance)
 
+![Sklearn PCA visualization](Images/sklearn_PCA_visual.png)
+
 ### 3. t-SNE
 - Implementation: sklearn TSNE with 3 components
 - Parameters: perplexity=10 (configurable via `--perplexity`)
 - Best for: Revealing local neighborhood structures
 - Shows: Dimension reduction info
 - Same color and shape scheme as PCA
+
+![t-SNE visualization](Images/t-SNE_visual.png)
 
 ### Visualization Features
 All 3D plots are interactive HTML files with:
