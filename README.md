@@ -175,6 +175,12 @@ This pipeline provides both methods to give complementary views:
 - **PCA** shows the global structure and verifies our manual implementation
 - **t-SNE** reveals how well K-Means separated the clusters locally
 
+### Results on the Sample Input File
+When running the included `pipeline_input/TitlesforL16HomeWork.csv`, both manual and sklearn PCA produced cleaner separation than t-SNE:
+- The three original groups occupy largely orthogonal directions in the embedding space, so PCA’s linear projection preserves their spread: the first three principal components capture ~33% of the variance, enough to keep clusters apart in 3D.
+- With only a few dozen samples per cluster, t-SNE (perplexity 10) prioritizes very local neighborhoods. That causes small intra-cluster variations to outweigh the broader between-cluster gaps, so points from different clusters may appear intertwined even though K-Means still distinguishes them.
+- PCA therefore offers the more interpretable plot for this dataset: it keeps similar titles together while maintaining the global distances that match the K-Means assignments, whereas t-SNE’s emphasis on local structure introduces visual overlap.
+
 ## 3D Visualization Details
 
 The pipeline generates three types of interactive 3D visualizations:
